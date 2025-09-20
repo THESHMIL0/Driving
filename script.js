@@ -23,6 +23,7 @@ const controls = {
     right: false
 };
 
+// This is the key fix for mobile phones
 document.getElementById('accelerate').addEventListener('touchstart', () => controls.accelerate = true);
 document.getElementById('accelerate').addEventListener('touchend', () => controls.accelerate = false);
 document.getElementById('accelerate').addEventListener('mousedown', () => controls.accelerate = true);
