@@ -119,5 +119,5 @@ function draw() {
     ctx.restore();
 }
 
-// Start the game loop
+// This single line starts the entire game loop
 animate();
