@@ -43,7 +43,7 @@ function handleButtonPress(buttonId, isPressed) {
 // Add event listeners for both touch and mouse
 document.getElementById('accelerate').addEventListener('touchstart', (e) => { e.preventDefault(); handleButtonPress('accelerate', true); });
 document.getElementById('accelerate').addEventListener('touchend', () => handleButtonPress('accelerate', false));
-document.getElementById('accelerate').addEventListener('mousedown', () => handleButtonPress('accelerate', true));
+document.getElementById('accelerate').addEventListener('mousedown', () => handleButtonPress('accelerate', true););
 document.getElementById('accelerate').addEventListener('mouseup', () => handleButtonPress('accelerate', false));
 
 document.getElementById('reverse').addEventListener('touchstart', (e) => { e.preventDefault(); handleButtonPress('reverse', true); });
