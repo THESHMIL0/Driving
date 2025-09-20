@@ -12,8 +12,7 @@ const car = {
     speed: 0,
     maxSpeed: 5,
     friction: 0.98,
-    angle: 0,
-    turnRate: 0.05
+    angle: 0
 };
 
 // Handle button presses using a holding state
@@ -106,14 +105,15 @@ function update() {
         }
     }
 
-    // New and improved steering logic
+    // This is the core fix for the controls. The turn is now relative to the direction of speed.
     if (car.speed != 0) {
-        const flip = car.speed > 0 ? 1 : -1;
+        const turnRate = 0.05;
+        const speedDirection = car.speed > 0 ? 1 : -1;
         if (heldButtons.left) {
-            car.angle += car.turnRate * flip;
+            car.angle += turnRate * speedDirection;
         }
         if (heldButtons.right) {
-            car.angle -= car.turnRate * flip;
+            car.angle -= turnRate * speedDirection;
         }
     }
     
