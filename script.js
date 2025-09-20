@@ -105,13 +105,15 @@ function update() {
         }
     }
 
-    // Update car's angle based on turning
+    // This is the core fix for the controls. The turn is now relative to the direction of speed.
     if (car.speed !== 0) {
+        const turnRate = 0.05;
+        const speedDirection = car.speed > 0 ? 1 : -1;
         if (heldButtons.left) {
-            car.angle += 0.05 * car.speed / Math.abs(car.speed); // Corrected logic
+            car.angle += turnRate * speedDirection;
         }
         if (heldButtons.right) {
-            car.angle -= 0.05 * car.speed / Math.abs(car.speed); // Corrected logic
+            car.angle -= turnRate * speedDirection;
         }
     }
     
@@ -119,7 +121,7 @@ function update() {
     car.y -= Math.cos(car.angle) * car.speed;
     car.x += Math.sin(car.angle) * car.speed;
     
-    // **Boundary Detection**
+    // Boundary Detection
     if (car.x < 0) {
         car.x = 0;
     }
