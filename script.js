@@ -107,12 +107,11 @@ function update() {
 
     // Update car's angle based on turning
     if (car.speed !== 0) {
-        const flip = car.speed > 0 ? 1 : -1;
         if (heldButtons.left) {
-            car.angle += 0.05 * flip;
+            car.angle += 0.05 * car.speed / Math.abs(car.speed); // Corrected logic
         }
         if (heldButtons.right) {
-            car.angle -= 0.05 * flip;
+            car.angle -= 0.05 * car.speed / Math.abs(car.speed); // Corrected logic
         }
     }
     
@@ -123,21 +122,15 @@ function update() {
     // **Boundary Detection**
     if (car.x < 0) {
         car.x = 0;
-        car.angle = 0; // Reset angle
-        car.speed = 0; // Stop car
     }
     if (car.x + car.width > canvas.width) {
         car.x = canvas.width - car.width;
-        car.angle = 0;
-        car.speed = 0;
     }
     if (car.y < 0) {
         car.y = 0;
-        car.speed = 0;
     }
     if (car.y + car.height > canvas.height) {
         car.y = canvas.height - car.height;
-        car.speed = 0;
     }
 }
 
