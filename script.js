@@ -43,7 +43,7 @@ function handleButtonPress(buttonId, isPressed) {
 // Add event listeners for both touch and mouse
 document.getElementById('accelerate').addEventListener('touchstart', (e) => { e.preventDefault(); handleButtonPress('accelerate', true); });
 document.getElementById('accelerate').addEventListener('touchend', () => handleButtonPress('accelerate', false));
-document.getElementById('accelerate').addEventListener('mousedown', () => handleButtonPress('accelerate', true););
+document.getElementById('accelerate').addEventListener('mousedown', () => handleButtonPress('accelerate', true));
 document.getElementById('accelerate').addEventListener('mouseup', () => handleButtonPress('accelerate', false));
 
 document.getElementById('reverse').addEventListener('touchstart', (e) => { e.preventDefault(); handleButtonPress('reverse', true); });
@@ -90,26 +90,20 @@ function animate() {
 function update() {
     // Update car's speed based on held buttons
     if (heldButtons.accelerate) {
-        car.speed += 0.2;
+        if (car.speed < car.maxSpeed) {
+            car.speed += 0.2;
+        }
+    } else if (heldButtons.reverse) {
+        if (car.speed > -car.maxSpeed / 2) {
+            car.speed -= 0.2;
+        }
+    } else {
+        // Slow down the car when no button is pressed
+        car.speed *= car.friction;
+        if (Math.abs(car.speed) < 0.1) {
+            car.speed = 0;
+        }
     }
-    if (heldButtons.reverse) {
-        car.speed -= 0.2;
-    }
-
-    // Apply friction to slow the car down
-    car.speed *= car.friction;
-
-    // Limit the speed to the maxSpeed
-    if (car.speed > car.maxSpeed) {
-        car.speed = car.maxSpeed;
-    }
-    if (car.speed < -car.maxSpeed / 2) {
-        car.speed = -car.maxSpeed / 2;
-    }
-
-    // Update car's position
-    car.y -= Math.cos(car.angle) * car.speed;
-    car.x += Math.sin(car.angle) * car.speed;
 
     // Update car's angle based on turning
     if (car.speed !== 0) {
@@ -120,6 +114,30 @@ function update() {
         if (heldButtons.right) {
             car.angle -= 0.05 * flip;
         }
+    }
+    
+    // Update car's position
+    car.y -= Math.cos(car.angle) * car.speed;
+    car.x += Math.sin(car.angle) * car.speed;
+    
+    // **Boundary Detection**
+    if (car.x < 0) {
+        car.x = 0;
+        car.angle = 0; // Reset angle
+        car.speed = 0; // Stop car
+    }
+    if (car.x + car.width > canvas.width) {
+        car.x = canvas.width - car.width;
+        car.angle = 0;
+        car.speed = 0;
+    }
+    if (car.y < 0) {
+        car.y = 0;
+        car.speed = 0;
+    }
+    if (car.y + car.height > canvas.height) {
+        car.y = canvas.height - car.height;
+        car.speed = 0;
     }
 }
 
