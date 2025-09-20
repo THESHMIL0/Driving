@@ -35,6 +35,26 @@ document.getElementById('left').addEventListener('mouseup', () => controls.left 
 document.getElementById('right').addEventListener('mousedown', () => controls.right = true);
 document.getElementById('right').addEventListener('mouseup', () => controls.right = false);
 
+// Function to draw the road
+function drawRoad() {
+    ctx.beginPath();
+    ctx.lineWidth = 60; // Width of the road
+    ctx.strokeStyle = '#7f8c8d'; // Road color
+    ctx.moveTo(canvas.width / 2, 0); // Start at the top center of the canvas
+    ctx.lineTo(canvas.width / 2, canvas.height); // Draw a line to the bottom center
+    ctx.stroke();
+    
+    // Add road markings
+    ctx.lineWidth = 5;
+    ctx.strokeStyle = '#ecf0f1';
+    ctx.setLineDash([20, 10]); // Creates a dashed line
+    ctx.beginPath();
+    ctx.moveTo(canvas.width / 2, 0);
+    ctx.lineTo(canvas.width / 2, canvas.height);
+    ctx.stroke();
+    ctx.setLineDash([]); // Reset line dash
+}
+
 // The main game loop
 function animate() {
     update();
@@ -81,6 +101,9 @@ function update() {
 function draw() {
     // Clear the canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Draw the road first
+    drawRoad();
 
     // Save the current canvas state before rotating
     ctx.save();
