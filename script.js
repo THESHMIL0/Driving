@@ -1,4 +1,4 @@
-// Get the canvas element from the HTML file
+// Get the canvas and its context
 const canvas = document.getElementById('gameCanvas');
 const ctx = canvas.getContext('2d');
 
@@ -8,14 +8,93 @@ const car = {
     y: canvas.height - 100,
     width: 50,
     height: 80,
-    color: 'red'
+    color: 'red',
+    speed: 0,
+    maxSpeed: 5,
+    friction: 0.98,
+    angle: 0
 };
 
-// Function to draw the car on the canvas
-function drawCar() {
-    ctx.fillStyle = car.color;
-    ctx.fillRect(car.x, car.y, car.width, car.height);
+// Handle button presses
+const controls = {
+    accelerate: false,
+    reverse: false,
+    left: false,
+    right: false
+};
+
+document.getElementById('accelerate').addEventListener('mousedown', () => controls.accelerate = true);
+document.getElementById('accelerate').addEventListener('mouseup', () => controls.accelerate = false);
+
+document.getElementById('reverse').addEventListener('mousedown', () => controls.reverse = true);
+document.getElementById('reverse').addEventListener('mouseup', () => controls.reverse = false);
+
+document.getElementById('left').addEventListener('mousedown', () => controls.left = true);
+document.getElementById('left').addEventListener('mouseup', () => controls.left = false);
+
+document.getElementById('right').addEventListener('mousedown', () => controls.right = true);
+document.getElementById('right').addEventListener('mouseup', () => controls.right = false);
+
+// The main game loop
+function animate() {
+    update();
+    draw();
+    requestAnimationFrame(animate);
 }
 
-// Draw the car for the first time
-drawCar();
+function update() {
+    // Update car's speed based on controls
+    if (controls.accelerate) {
+        car.speed += 0.2;
+    }
+    if (controls.reverse) {
+        car.speed -= 0.2;
+    }
+
+    // Apply friction to slow the car down
+    car.speed *= car.friction;
+
+    // Limit the speed to the maxSpeed
+    if (car.speed > car.maxSpeed) {
+        car.speed = car.maxSpeed;
+    }
+    if (car.speed < -car.maxSpeed / 2) {
+        car.speed = -car.maxSpeed / 2;
+    }
+
+    // Update car's position
+    car.y -= Math.cos(car.angle) * car.speed;
+    car.x += Math.sin(car.angle) * car.speed;
+
+    // Update car's angle based on turning
+    if (car.speed !== 0) {
+        const flip = car.speed > 0 ? 1 : -1;
+        if (controls.left) {
+            car.angle += 0.05 * flip;
+        }
+        if (controls.right) {
+            car.angle -= 0.05 * flip;
+        }
+    }
+}
+
+function draw() {
+    // Clear the canvas
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // Save the current canvas state before rotating
+    ctx.save();
+    ctx.translate(car.x + car.width / 2, car.y + car.height / 2);
+    ctx.rotate(-car.angle);
+    ctx.translate(-(car.x + car.width / 2), -(car.y + car.height / 2));
+
+    // Draw the car with the new angle
+    ctx.fillStyle = car.color;
+    ctx.fillRect(car.x, car.y, car.width, car.height);
+
+    // Restore the canvas state
+    ctx.restore();
+}
+
+// Start the game loop
+animate();
