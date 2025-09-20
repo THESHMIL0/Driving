@@ -15,53 +15,69 @@ const car = {
     angle: 0
 };
 
-// Handle button presses
-const controls = {
+// Handle button presses using a holding state
+const heldButtons = {
     accelerate: false,
     reverse: false,
     left: false,
     right: false
 };
 
-// This is the key fix for mobile phones
-document.getElementById('accelerate').addEventListener('touchstart', () => controls.accelerate = true);
-document.getElementById('accelerate').addEventListener('touchend', () => controls.accelerate = false);
-document.getElementById('accelerate').addEventListener('mousedown', () => controls.accelerate = true);
-document.getElementById('accelerate').addEventListener('mouseup', () => controls.accelerate = false);
+function handleButtonPress(buttonId, isPressed) {
+    switch(buttonId) {
+        case 'accelerate':
+            heldButtons.accelerate = isPressed;
+            break;
+        case 'reverse':
+            heldButtons.reverse = isPressed;
+            break;
+        case 'left':
+            heldButtons.left = isPressed;
+            break;
+        case 'right':
+            heldButtons.right = isPressed;
+            break;
+    }
+}
 
-document.getElementById('reverse').addEventListener('touchstart', () => controls.reverse = true);
-document.getElementById('reverse').addEventListener('touchend', () => controls.reverse = false);
-document.getElementById('reverse').addEventListener('mousedown', () => controls.reverse = true);
-document.getElementById('reverse').addEventListener('mouseup', () => controls.reverse = false);
+// Add event listeners for both touch and mouse
+document.getElementById('accelerate').addEventListener('touchstart', (e) => { e.preventDefault(); handleButtonPress('accelerate', true); });
+document.getElementById('accelerate').addEventListener('touchend', () => handleButtonPress('accelerate', false));
+document.getElementById('accelerate').addEventListener('mousedown', () => handleButtonPress('accelerate', true));
+document.getElementById('accelerate').addEventListener('mouseup', () => handleButtonPress('accelerate', false));
 
-document.getElementById('left').addEventListener('touchstart', () => controls.left = true);
-document.getElementById('left').addEventListener('touchend', () => controls.left = false);
-document.getElementById('left').addEventListener('mousedown', () => controls.left = true);
-document.getElementById('left').addEventListener('mouseup', () => controls.left = false);
+document.getElementById('reverse').addEventListener('touchstart', (e) => { e.preventDefault(); handleButtonPress('reverse', true); });
+document.getElementById('reverse').addEventListener('touchend', () => handleButtonPress('reverse', false));
+document.getElementById('reverse').addEventListener('mousedown', () => handleButtonPress('reverse', true));
+document.getElementById('reverse').addEventListener('mouseup', () => handleButtonPress('reverse', false));
 
-document.getElementById('right').addEventListener('touchstart', () => controls.right = true);
-document.getElementById('right').addEventListener('touchend', () => controls.right = false);
-document.getElementById('right').addEventListener('mousedown', () => controls.right = true);
-document.getElementById('right').addEventListener('mouseup', () => controls.right = false);
+document.getElementById('left').addEventListener('touchstart', (e) => { e.preventDefault(); handleButtonPress('left', true); });
+document.getElementById('left').addEventListener('touchend', () => handleButtonPress('left', false));
+document.getElementById('left').addEventListener('mousedown', () => handleButtonPress('left', true));
+document.getElementById('left').addEventListener('mouseup', () => handleButtonPress('left', false));
+
+document.getElementById('right').addEventListener('touchstart', (e) => { e.preventDefault(); handleButtonPress('right', true); });
+document.getElementById('right').addEventListener('touchend', () => handleButtonPress('right', false));
+document.getElementById('right').addEventListener('mousedown', () => handleButtonPress('right', true));
+document.getElementById('right').addEventListener('mouseup', () => handleButtonPress('right', false));
 
 // Function to draw the road
 function drawRoad() {
     ctx.beginPath();
-    ctx.lineWidth = 60; // Width of the road
-    ctx.strokeStyle = '#7f8c8d'; // Road color
-    ctx.moveTo(canvas.width / 2, 0); // Start at the top center of the canvas
-    ctx.lineTo(canvas.width / 2, canvas.height); // Draw a line to the bottom center
+    ctx.lineWidth = 60;
+    ctx.strokeStyle = '#7f8c8d';
+    ctx.moveTo(canvas.width / 2, 0);
+    ctx.lineTo(canvas.width / 2, canvas.height);
     ctx.stroke();
     
-    // Add road markings
     ctx.lineWidth = 5;
     ctx.strokeStyle = '#ecf0f1';
-    ctx.setLineDash([20, 10]); // Creates a dashed line
+    ctx.setLineDash([20, 10]);
     ctx.beginPath();
     ctx.moveTo(canvas.width / 2, 0);
     ctx.lineTo(canvas.width / 2, canvas.height);
     ctx.stroke();
-    ctx.setLineDash([]); // Reset line dash
+    ctx.setLineDash([]);
 }
 
 // The main game loop
@@ -72,11 +88,11 @@ function animate() {
 }
 
 function update() {
-    // Update car's speed based on controls
-    if (controls.accelerate) {
+    // Update car's speed based on held buttons
+    if (heldButtons.accelerate) {
         car.speed += 0.2;
     }
-    if (controls.reverse) {
+    if (heldButtons.reverse) {
         car.speed -= 0.2;
     }
 
@@ -98,10 +114,10 @@ function update() {
     // Update car's angle based on turning
     if (car.speed !== 0) {
         const flip = car.speed > 0 ? 1 : -1;
-        if (controls.left) {
+        if (heldButtons.left) {
             car.angle += 0.05 * flip;
         }
-        if (controls.right) {
+        if (heldButtons.right) {
             car.angle -= 0.05 * flip;
         }
     }
