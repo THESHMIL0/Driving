@@ -23,15 +23,23 @@ const controls = {
     right: false
 };
 
+document.getElementById('accelerate').addEventListener('touchstart', () => controls.accelerate = true);
+document.getElementById('accelerate').addEventListener('touchend', () => controls.accelerate = false);
 document.getElementById('accelerate').addEventListener('mousedown', () => controls.accelerate = true);
 document.getElementById('accelerate').addEventListener('mouseup', () => controls.accelerate = false);
 
+document.getElementById('reverse').addEventListener('touchstart', () => controls.reverse = true);
+document.getElementById('reverse').addEventListener('touchend', () => controls.reverse = false);
 document.getElementById('reverse').addEventListener('mousedown', () => controls.reverse = true);
 document.getElementById('reverse').addEventListener('mouseup', () => controls.reverse = false);
 
+document.getElementById('left').addEventListener('touchstart', () => controls.left = true);
+document.getElementById('left').addEventListener('touchend', () => controls.left = false);
 document.getElementById('left').addEventListener('mousedown', () => controls.left = true);
 document.getElementById('left').addEventListener('mouseup', () => controls.left = false);
 
+document.getElementById('right').addEventListener('touchstart', () => controls.right = true);
+document.getElementById('right').addEventListener('touchend', () => controls.right = false);
 document.getElementById('right').addEventListener('mousedown', () => controls.right = true);
 document.getElementById('right').addEventListener('mouseup', () => controls.right = false);
 
