@@ -9,6 +9,7 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
+    overflow: hidden; /* Prevent scrolling on small screens */
 }
 
 canvas {
@@ -18,4 +19,46 @@ canvas {
 
 h1 {
     margin-bottom: 20px;
+}
+
+#controls {
+    display: grid;
+    grid-template-areas:
+        ". accelerate ."
+        "left . right"
+        ". reverse .";
+    gap: 10px;
+    margin-top: 20px;
+}
+
+#accelerate {
+    grid-area: accelerate;
+}
+
+#reverse {
+    grid-area: reverse;
+}
+
+#left {
+    grid-area: left;
+}
+
+#right {
+    grid-area: right;
+}
+
+#controls button {
+    width: 60px;
+    height: 60px;
+    font-size: 24px;
+    border: none;
+    border-radius: 10px;
+    background-color: #3498db;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+#controls button:active {
+    background-color: #2980b9;
 }
