@@ -9,7 +9,7 @@ body {
     align-items: center;
     height: 100vh;
     margin: 0;
-    overflow: hidden; /* Prevent scrolling on small screens */
+    overflow: hidden;
 }
 
 canvas {
